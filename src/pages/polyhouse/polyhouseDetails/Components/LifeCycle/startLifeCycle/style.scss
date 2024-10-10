@@ -1,0 +1,140 @@
+@import "../../../../../../assets/styles/mixins.scss";
+
+.stage_detail_header_btn_container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.start_lifecycle_main_container {
+  height: calc(100vh - 80px);
+  overflow: auto;
+
+  .heading2 {
+    font-weight: 600;
+  }
+
+  .ant-collapse-header-text {
+    font-weight: 600;
+    font-size: 18px;
+  }
+
+  .ant-card-head {
+    padding: 0 20px !important;
+  }
+
+  .start_lifecycle_container {
+    display: grid;
+    grid-template-columns: 0.35fr 1fr;
+    height: calc(100vh - 150px);
+    padding: 20px;
+    gap: 20px;
+
+    .heading2 {
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    .divider {
+      margin-bottom: 20px;
+      border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+      padding-bottom: 15px;
+    }
+
+    .lifeCycle_stages_container {
+      border-right: 2px solid rgba(0, 0, 0, 0.05);
+      padding-right: 20px;
+      .lifecycle_stepper {
+        height: calc(100vh - 240px);
+        overflow: auto;
+      }
+      .mobile_lifecycle_stepper {
+        display: none !important;
+      }
+    }
+
+    .stage_detail_container {
+      height: calc(100vh - 170px);
+      overflow: auto;
+    }
+  }
+
+  .ant-steps-item {
+    .ant-steps-item-container {
+      display: flex;
+      align-items: flex-start;
+    }
+    .ant-steps-item-icon {
+      min-width: 32px;
+    }
+    .ant-steps-item-content {
+      margin-top: -4px !important;
+    }
+
+    .ant-steps-item-title {
+      font-weight: 600;
+    }
+    .ant-steps-item-description {
+      font-size: 14px;
+    }
+  }
+
+  .ant-card-body {
+    padding: 0;
+  }
+
+  .stage_details_container {
+    margin-left: 31px;
+  }
+}
+
+@media (max-width: 1150px) {
+  .start_lifecycle_main_container {
+    .start_lifecycle_container {
+      grid-template-columns: 1fr;
+      height: auto;
+      .lifeCycle_stages_container {
+        border: none;
+        padding-right: 0;
+        margin-bottom: 20px;
+
+        .desktop_lifecycle_stepper {
+          display: none !important;
+        }
+
+        .mobile_lifecycle_stepper {
+          display: grid !important;
+        }
+
+        .lifecycle_stepper {
+          height: auto;
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+        }
+        .ant-steps-item-tail {
+          display: none !important;
+        }
+      }
+      .stage_detail_container {
+        height: auto;
+      }
+    }
+
+    .ant-steps-item {
+      .ant-steps-item-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .ant-steps-item-title {
+        text-align: center;
+        padding-inline-end: 0;
+      }
+      .ant-steps-item-title::after {
+        display: none;
+      }
+      .ant-steps-item-description {
+        text-align: center;
+      }
+    }
+  }
+}

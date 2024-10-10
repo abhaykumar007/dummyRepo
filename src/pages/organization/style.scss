@@ -1,0 +1,106 @@
+@import "../../assets/styles/mixins.scss";
+
+.organization_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow: auto;
+  padding: 80px 50px;
+  gap: 50px;
+  min-height: 100vh;
+  .organization_text {
+    font-size: 35px;
+  }
+  .organization_card_container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    .organization_card {
+      height: 92px;
+      width: 300px;
+      box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+      border-radius: 10px;
+      display: flex;
+      padding: 0 10px;
+      align-items: center;
+      gap: 20px;
+      cursor: pointer;
+      position: relative;
+      .organization_logo {
+        height: 70px;
+        width: 70px;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+    }
+    .selected_organization_card {
+      border: 3px solid $primary;
+      position: relative;
+      .selected_organization_tick {
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        height: 25px;
+        width: 25px;
+        background-color: $primary;
+        border-radius: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 20px;
+      }
+      p {
+        color: $primary;
+        font-weight: 600;
+      }
+    }
+    .organization_card:hover {
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+  }
+}
+.loading_organization_logo {
+  height: 70px !important;
+  width: 70px !important;
+}
+
+@media (max-width: 750px) {
+  .organization_container {
+    .organization_card_container {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr;
+      width: 100%;
+      .organization_card {
+        width: 100%;
+        height: 70px;
+        gap: 10px;
+        .organization_logo {
+          height: 50px;
+          width: 50px;
+        }
+        p {
+          font-size: 18px;
+        }
+      }
+    }
+  }
+
+  .loading_organization_logo {
+    height: 55px !important;
+    width: 55px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .organization_container {
+    padding: 50px 30px;
+    gap: 30px;
+    .organization_card_container {
+      grid-template-columns: 1fr;
+    }
+  }
+}

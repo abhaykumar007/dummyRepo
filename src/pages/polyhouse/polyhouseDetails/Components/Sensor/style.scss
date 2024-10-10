@@ -1,0 +1,122 @@
+@import "../../../../../assets/styles/mixins.scss";
+
+.activeBtn {
+background-color:$primary ;
+color: white;
+}
+
+.sensor-graph-container {
+  background-color: #fafafa;
+  padding: 10px 5px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 900px;
+  height: auto;
+  margin: 0 auto;
+  min-height: 600px;
+}
+
+.sensor-graph-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 5px;
+}
+
+.refreshButton {
+  width: 5%;
+}
+
+.header-button-width {
+  width: 40px !important;
+}
+
+@media (max-width: 768px) { /* Tablet view */
+  .sensor-graph-container {
+    width: 100%;
+  }
+
+  .refreshButton {
+    width: 20%;
+  }
+}
+
+@media (max-width: 1000px) {
+  .sensor-graph-container {
+    width: 100%;
+  }
+
+  .refreshButton {
+    width: 20%;
+  }
+}
+
+@media (max-width: 480px) {
+  .sensor-graph-container {
+    width: 100%;
+  }
+
+
+  .refreshButton {
+    width: 30%;
+  }
+}
+
+
+.sensor-details-container {
+  background-color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.sensor-details-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sensor-card {
+  margin-bottom: 10px;
+}
+
+.sensor-content {
+  display: flex;
+  gap: 20px;
+}
+
+.sensor-graph-info {
+  width: 100%;
+}
+
+.sensor-info {
+  // flex-grow: 1;
+  width: 60%;
+}
+
+.sensor-schedule {
+  // flex-grow: 1;
+  width: 40%;
+  border-left: 1px solid #f0f0f0;
+  padding-left: 20px;
+}
+
+@media (max-width: 1130px) {
+  .sensor-content {
+    flex-direction: column;
+  }
+  
+  .sensor-graph-container {
+    width: 100%;
+  }
+  .sensor-info {
+    // flex-grow: 1;
+    width: 100%;
+  }
+
+  .sensor-schedule {
+    // flex-grow: 1;
+    width: 100%;
+    border-left: none;
+    padding-left: 0px;
+  }
+}

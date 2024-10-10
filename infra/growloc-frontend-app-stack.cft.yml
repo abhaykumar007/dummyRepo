@@ -1,0 +1,352 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Static Website: combining S3, CloudFront and Route53 template"
+Metadata:
+  "AWS::CloudFormation::Interface":
+    ParameterGroups:
+      - Label:
+          default: "Parent Stacks"
+        Parameters:
+          - ParentZoneStack
+          - Stage
+      - Label:
+          default: "SSL/TLS Parameters"
+        Parameters:
+          - CertId
+Parameters:
+  Stage:
+    Description: "The name of the stage"
+    Type: String
+  ParentZoneStack:
+    Description: "Stack name of parent zone stack based on infra/zone-*.yaml template."
+    Type: String
+  CertId:
+    Description: "Certificate Id from the us-east-1 region!"
+    Type: String
+Conditions:
+  IsProd: !Equals [!Ref Stage, "prod"]
+Resources:
+  S3Bucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName:
+        !If [IsProd, !Sub "app.growloc.farm", !Sub "app.${Stage}.growloc.farm"]
+      LifecycleConfiguration:
+        Rules:
+          - AbortIncompleteMultipartUpload:
+              DaysAfterInitiation: 1
+            Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+  S3BucketPolicy:
+    Type: "AWS::S3::BucketPolicy"
+    Properties:
+      Bucket: !Ref S3Bucket
+      PolicyDocument:
+        Statement:
+          - Action: "s3:GetObject"
+            Effect: Allow
+            Resource: !Sub "arn:aws:s3:::${S3Bucket}/*"
+            Principal:
+              CanonicalUser: !GetAtt CloudFrontOriginAccessIdentity.S3CanonicalUserId
+          - Sid: AllowSSLRequestsOnly # AWS Foundational Security Best Practices v1.0.0 S3.5
+            Effect: Deny
+            Principal: "*"
+            Action: "s3:*"
+            Resource:
+              - !GetAtt "S3Bucket.Arn"
+              - !Sub "${S3Bucket.Arn}/*"
+            Condition:
+              Bool:
+                "aws:SecureTransport": false
+  CachePolicy:
+    Type: AWS::CloudFront::CachePolicy
+    Properties:
+      CachePolicyConfig:
+        Comment: !Sub "app.${Stage}.growloc.farm"
+        Name: "app-assets-cache-policy"
+        DefaultTTL: 86400
+        MaxTTL: 31536000
+        MinTTL: 1800
+        ParametersInCacheKeyAndForwardedToOrigin:
+          EnableAcceptEncodingGzip: true
+          EnableAcceptEncodingBrotli: true
+          HeadersConfig:
+            HeaderBehavior: whitelist
+            Headers:
+              - "Origin"
+              - "Referer"
+              - "CloudFront-Viewer-Country"
+          CookiesConfig:
+            CookieBehavior: none
+          QueryStringsConfig:
+            QueryStringBehavior: all
+  CloudFrontOriginAccessIdentity:
+    Type: "AWS::CloudFront::CloudFrontOriginAccessIdentity"
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: !Sub "app.${Stage}.growloc.farm"
+  CloudFrontDistribution:
+    Type: "AWS::CloudFront::Distribution"
+    Properties:
+      DistributionConfig:
+        PriceClass: "PriceClass_200" #only cache at US/Europe/Asia -- https://aws.amazon.com/cloudfront/pricing/
+        Aliases:
+          - !If [
+              IsProd,
+              !Sub "app.growloc.farm",
+              !Sub "app.${Stage}.growloc.farm",
+            ]
+        Comment: !Sub "app.${Stage}.growloc.farm"
+        CustomErrorResponses:
+          - ErrorCachingMinTTL: 10
+            ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: "/index.html"
+          - ErrorCachingMinTTL: 10
+            ErrorCode: 403
+            ResponseCode: 200
+            ResponsePagePath: "/index.html"
+        DefaultCacheBehavior:
+          TargetOriginId: s3origin-app-console
+          ViewerProtocolPolicy: "redirect-to-https"
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          CachedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          CachePolicyId: !GetAtt "CachePolicy.Id"
+          Compress: true
+        CacheBehaviors:
+          - CachePolicyId: "4135ea2d-6df8-44a3-9df3-4b5a84be39ad"
+            PathPattern: "index.html*"
+            TargetOriginId: s3origin-app-console
+            ViewerProtocolPolicy: "redirect-to-https"
+            AllowedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+            CachedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+            Compress: true
+        DefaultRootObject: "index.html"
+        Enabled: true
+        HttpVersion: http2
+        IPV6Enabled: true
+        Origins:
+          - DomainName: !GetAtt "S3Bucket.RegionalDomainName"
+            Id: s3origin-app-console
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"
+        ViewerCertificate:
+          AcmCertificateArn: !Sub "arn:aws:acm:us-east-1:${AWS::AccountId}:certificate/${CertId}"
+          MinimumProtocolVersion: "TLSv1.2_2021"
+          SslSupportMethod: "sni-only"
+  Route53RecordV2:
+    Type: "AWS::Route53::RecordSetGroup"
+    Properties:
+      HostedZoneId:
+        { "Fn::ImportValue": !Sub "${ParentZoneStack}-HostedZoneId" }
+      RecordSets:
+        - Name:
+            !If [
+              IsProd,
+              !Sub "app.growloc.farm",
+              !Sub "app.${Stage}.growloc.farm",
+            ]
+          Type: A
+          AliasTarget:
+            HostedZoneId: Z2FDTNDATAQYW2 # Magic CloudFront number
+            DNSName: !GetAtt "CloudFrontDistribution.DomainName"
+  Route53RecordIPv6:
+    Type: "AWS::Route53::RecordSetGroup"
+    Properties:
+      HostedZoneId:
+        { "Fn::ImportValue": !Sub "${ParentZoneStack}-HostedZoneId" }
+      RecordSets:
+        - Name:
+            !If [
+              IsProd,
+              !Sub "app.growloc.farm",
+              !Sub "app.${Stage}.growloc.farm",
+            ]
+          Type: AAAA
+          AliasTarget:
+            HostedZoneId: Z2FDTNDATAQYW2 # Magic CloudFront number
+            DNSName: !GetAtt "CloudFrontDistribution.DomainName"
+  S3BucketAssets:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName:
+        !If [
+          IsProd,
+          !Sub "static-growloc-farm",
+          !Sub "static-${Stage}-growloc-farm",
+        ]
+      LifecycleConfiguration:
+        Rules:
+          - AbortIncompleteMultipartUpload:
+              DaysAfterInitiation: 1
+            Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+  S3BucketPolicyAssets:
+    Type: "AWS::S3::BucketPolicy"
+    Properties:
+      Bucket: !Ref S3BucketAssets
+      PolicyDocument:
+        Statement:
+          - Action: "s3:GetObject"
+            Effect: Allow
+            Resource: !Sub "arn:aws:s3:::${S3BucketAssets}/*"
+            Principal:
+              CanonicalUser: !GetAtt CloudFrontOriginAccessIdentityAssets.S3CanonicalUserId
+          - Sid: AllowSSLRequestsOnly # AWS Foundational Security Best Practices v1.0.0 S3.5
+            Effect: Deny
+            Principal: "*"
+            Action: "s3:*"
+            Resource:
+              - !GetAtt "S3BucketAssets.Arn"
+              - !Sub "${S3BucketAssets.Arn}/*"
+            Condition:
+              Bool:
+                "aws:SecureTransport": false
+  CloudFrontOriginAccessIdentityAssets:
+    Type: "AWS::CloudFront::CloudFrontOriginAccessIdentity"
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: !Sub "static-${Stage}-growloc-farm"
+  CloudFrontDistributionAssets:
+    Type: "AWS::CloudFront::Distribution"
+    Properties:
+      DistributionConfig:
+        PriceClass: "PriceClass_200" #only cache at US/Europe/Asia -- https://aws.amazon.com/cloudfront/pricing/
+        Aliases:
+          - !If [
+              IsProd,
+              !Sub "static.growloc.farm",
+              !Sub "static.${Stage}.growloc.farm",
+            ]
+        Comment: !Sub "static.${Stage}.growloc.farm"
+        DefaultCacheBehavior:
+          TargetOriginId: s3originAssets
+          ViewerProtocolPolicy: "redirect-to-https"
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          CachedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          CachePolicyId: !GetAtt "CachePolicy.Id"
+          Compress: true
+        Enabled: true
+        HttpVersion: http2
+        IPV6Enabled: true
+        Origins:
+          - DomainName: !GetAtt "S3BucketAssets.RegionalDomainName"
+            Id: s3originAssets
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentityAssets}"
+        ViewerCertificate:
+          AcmCertificateArn: !Sub "arn:aws:acm:us-east-1:${AWS::AccountId}:certificate/${CertId}"
+          MinimumProtocolVersion: "TLSv1.2_2021"
+          SslSupportMethod: "sni-only"
+  Route53RecordV2Assets:
+    Type: "AWS::Route53::RecordSetGroup"
+    Properties:
+      HostedZoneId:
+        { "Fn::ImportValue": !Sub "${ParentZoneStack}-HostedZoneId" }
+      RecordSets:
+        - Name:
+            !If [
+              IsProd,
+              !Sub "static.growloc.farm",
+              !Sub "static.${Stage}.growloc.farm",
+            ]
+          Type: A
+          AliasTarget:
+            HostedZoneId: Z2FDTNDATAQYW2 # Magic CloudFront number
+            DNSName: !GetAtt "CloudFrontDistributionAssets.DomainName"
+  Route53RecordIPv6Assets:
+    Type: "AWS::Route53::RecordSetGroup"
+    Properties:
+      HostedZoneId:
+        { "Fn::ImportValue": !Sub "${ParentZoneStack}-HostedZoneId" }
+      RecordSets:
+        - Name:
+            !If [
+              IsProd,
+              !Sub "static.growloc.farm",
+              !Sub "static.${Stage}.growloc.farm",
+            ]
+          Type: AAAA
+          AliasTarget:
+            HostedZoneId: Z2FDTNDATAQYW2 # Magic CloudFront number
+            DNSName: !GetAtt "CloudFrontDistributionAssets.DomainName"
+Outputs:
+  TemplateID:
+    Description: "template id."
+    Value: "growloc/app-console-website"
+  TemplateVersion:
+    Description: "template version."
+    Value: "1.0.0"
+  StackName:
+    Description: "Stack name."
+    Value: !Sub "${AWS::StackName}"
+  BucketName:
+    Description: "Name of the S3 bucket storing the static files."
+    Value: !Ref S3Bucket
+    Export:
+      Name: !Sub "${AWS::StackName}-BucketName"
+  URL:
+    Description: "URL to static website."
+    Value:
+      !If [
+        IsProd,
+        !Sub "https://app.growloc.farm",
+        !Sub "https://app.${Stage}.growloc.farm",
+      ]
+    Export:
+      Name: !Sub "${AWS::StackName}-URL"
+  DistributionId:
+    Description: "CloudFront distribution id"
+    Value: !Ref CloudFrontDistribution
+    Export:
+      Name: !Sub "${AWS::StackName}-DistributionId"
+  WebsiteURL:
+    Value: !GetAtt
+      - S3Bucket
+      - WebsiteURL
+    Description: URL for website hosted on S3
+  S3BucketSecureURL:
+    Value: !Join
+      - ""
+      - - "https://"
+        - !GetAtt
+          - S3Bucket
+          - DomainName
+    Description: Name of S3 bucket to hold website content

@@ -1,0 +1,15 @@
+.form_input_container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 20px;
+}
+
+.submit_btn {
+  margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+  .form_input_container {
+    grid-template-columns: 1fr;
+  }
+}

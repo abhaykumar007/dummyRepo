@@ -1,0 +1,116 @@
+// Colors
+$white: #fff;
+$black: #202020;
+$off-white: #fafafa;
+$blue: #4b7cf3;
+$blue-very-light: #eef3ff;
+$blue-light: #42baf9;
+$blue-dark: #2c60e4;
+$grey: grey;
+$gray-1: #f2f4f8;
+$gray-2: #e4e9f0;
+$gray-3: #d9dee9;
+$gray-4: #c8c8c8;
+$gray-5: #8c8c8c;
+$gray-6: #626262;
+$yellow: #ff0;
+$orange: #faad15;
+$red: #f5222e;
+$pink: #fd3995;
+$purple: #652eff;
+$green: #41b883;
+
+$dark-1: #111;
+$dark-2: #2c2c2c;
+
+$text: $gray-6;
+$border: $gray-2;
+$placeholder-text: $grey;
+
+// Accent colors
+$default: $gray-4;
+$primary: #00c71e;
+$primary-dark: #005655;
+$primary-light: #c9f001;
+$secondary: #feffe4;
+$success: $green;
+$info: $blue-light;
+$warning: $orange;
+$danger: $red;
+$light: $gray-1;
+$dark: $black;
+
+// Font Family
+$base-font-family: "Mukta", sans-serif;
+
+// Font Size
+$base-font-size: 16 !default;
+
+// Shadows
+$shadow: 0 0 40px -10px rgba($black, 0.2);
+$shadow-2: 0 4px 38px 0 rgba($black, 0.11), 0 0 21px 0 rgba($black, 0.05);
+$shadow-3: 0 0 100px -30px rgba(57, 55, 73, 0.3);
+$shadow-4: 0 4px 10px 0 rgba($black, 0.03), 0 0 10px 0 rgba($black, 0.02);
+$shadow-5: 0 0 40px -10px rgba($black, 0.4);
+$shadow-ant: 0 10px 35px -5px rgba(0, 0, 0, 0.15);
+
+// Convert value of rem() sass mixin function
+@function rem($px, $base: $base-font-size) {
+  @return #{floor(($px/$base) * 100) / 100}rem; // to REMs
+  // @return #{$px}px; // to PX's
+}
+
+// Transitions
+@mixin transition-bg() {
+  transition: background 0.2s ease-in-out;
+}
+@mixin transition-color() {
+  transition: color 0.2s ease-in-out;
+}
+@mixin transition-fast() {
+  transition: all 0.05s ease-in-out;
+}
+@mixin transition-middle() {
+  transition: all 0.1s ease-in-out;
+}
+@mixin transition-slow() {
+  transition: all 0.2s ease-in-out;
+}
+
+// Responsive utils
+$xxl-min-width: 1600px;
+$xxl-max-width: 1599px;
+$xl-min-width: 1200px;
+$xl-max-width: 1199px;
+$md-min-width: 992px;
+$md-max-width: 991px;
+$sm-min-width: 768px;
+$sm-max-width: 767px;
+$xs-min-width: 544px;
+$xs-max-width: 543px;
+
+@font-face {
+  font-family: "LufgaRegular";
+  src: local("LufgaRegular"),
+    url("../fonts/LufgaRegular.ttf") format("truetype");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "LufgaMedium";
+  src: local("LufgaMedium"), url("../fonts/LufgaMedium.ttf") format("truetype");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "LufgaSemiBold";
+  src: local("LufgaSemiBold"),
+    url("../fonts/LufgaSemiBold.ttf") format("truetype");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "LufgaBold";
+  src: local("LufgaBold"), url("../fonts/LufgaBold.ttf") format("truetype");
+  font-weight: 700;
+}

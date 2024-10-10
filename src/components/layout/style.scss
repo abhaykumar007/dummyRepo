@@ -1,0 +1,257 @@
+@import "../../assets/styles/mixins.scss";
+
+.ant-layout {
+  background-color: #fafafa !important;
+  min-height: 100vh;
+  max-height: fit-content;
+}
+.ant-drawer-body {
+  padding: 0 !important;
+  background-color: #fafafa !important;
+}
+
+.ant-menu {
+  background-color: transparent !important;
+}
+
+.sideBar {
+  background-color: $primary-dark;
+  height: 100vh;
+  overflow-x: auto;
+
+  .sidebar_logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    position: sticky;
+    top: 0px;
+    height: 100px;
+    background-color: $primary-dark;
+    z-index: 1;
+    img {
+      width: 150px;
+    }
+  }
+
+  .sidebar_menu_container {
+    padding: 0 8px;
+    padding-bottom: 20px;
+  }
+}
+
+.menu_item {
+  display: flex;
+  align-items: center;
+  color: #80abaa !important;
+  gap: 15px;
+  p {
+    color: #80abaa;
+  }
+}
+
+.ant-menu-submenu-arrow {
+  color: #80abaa !important;
+}
+.ant-menu {
+  border: none !important;
+}
+
+.ant-menu-item {
+  margin-bottom: 8px !important;
+  padding: 22px !important;
+  border-radius: 20px !important;
+}
+.ant-menu-item:active {
+  background-color: $primary !important;
+  .menu_item {
+    color: $white !important;
+  }
+  p {
+    color: $white !important;
+  }
+}
+
+.ant-menu-item-selected {
+  background-color: $primary !important;
+  .menu_item {
+    color: $white !important;
+  }
+  p {
+    color: $white !important;
+  }
+}
+
+.ant-menu-sub {
+  width: 90% !important;
+  margin-left: auto !important;
+}
+
+.ant-menu-submenu-title {
+  padding: 22px !important;
+  margin-bottom: 8px !important;
+  border-radius: 20px !important;
+}
+
+.selected_submenu {
+  .ant-menu-submenu-title {
+    background-color: $primary !important;
+    .menu_item {
+      color: $white !important;
+    }
+    p {
+      color: $white !important;
+    }
+    .ant-menu-submenu-arrow {
+      color: $white !important;
+    }
+  }
+}
+
+.header-notifications-dropdown {
+  background: #fff;
+  box-shadow: 0 20px 27px rgb(0 0 0 / 5%);
+  border-radius: 12px;
+  min-width: 150px;
+  padding-left: 16px;
+  margin-top: 25px;
+  display: flex;
+  align-items: center;
+}
+
+.colorRed {
+  color: $red;
+}
+
+.sideBarMenuTab {
+  display: none;
+  cursor: pointer;
+}
+
+.header {
+  display: flex;
+  min-height: 70px;
+  height: auto;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $off-white !important;
+  padding-right: 20px;
+  padding-left: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 99;
+
+  .header_title_container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    .header_title {
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+  }
+}
+
+.headerRight {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.select_farm_text {
+  color: $gray-6;
+}
+.select_farm_text {
+  color: $gray-6;
+}
+
+.language_container {
+  padding: 3px 10px;
+  border-radius: 4px;
+  background-color: rgba($primary, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  cursor: pointer;
+  .language_inside_container {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    text-transform: uppercase;
+  }
+}
+
+.notification_container {
+  min-width: 30px;
+  padding: 0;
+  color: $primary;
+}
+
+.profile_container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  .profile_name {
+    font-weight: 600;
+  }
+  .user_role {
+    font-size: 10px;
+  }
+}
+
+.user_profile_dropdown_container {
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 5px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  background-color: white;
+  margin-right: 2px;
+  .user_profile_dropdown_list {
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    .user_profile_dropdown_icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  .logout_container {
+    color: $red !important;
+    p {
+      color: $red !important;
+    }
+  }
+  .logout_container:hover {
+    background-color: rgba($red, 0.3) !important;
+  }
+  .user_profile_dropdown_list:hover {
+    background-color: rgba($primary, 0.1);
+    color: $primary;
+    p {
+      color: $primary;
+    }
+  }
+}
+.content-ant {
+  height: calc(100vh - 75px);
+  overflow: auto;
+  padding: 0 10px 10px 10px !important;
+}
+
+.farm_label {
+  display: inline-block;
+  width: 100%;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}

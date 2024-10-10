@@ -1,0 +1,156 @@
+@import "../../assets/styles/mixins.scss";
+
+.workflow_list_details_container {
+  display: flex;
+  .workflow_list_container {
+    padding-top: 15px;
+    width: 100%;
+    .worflow_list {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+
+      .edit_btn {
+        height: 40px !important;
+        width: 40px !important;
+        padding: 0 !important;
+      }
+    }
+  }
+  .workflow_header_container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+}
+
+.workflow_detail_card {
+  cursor: pointer;
+}
+.cancel_btn {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.workflow_details_container {
+  padding: 15px;
+  margin-top: 10px;
+  .worflow_details_list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+.workflow_detail_card:hover {
+  transition: 0.6s;
+  background-color: rgba($primary, 0.2);
+}
+.workflow_selected_detail {
+  background-color: rgba($primary, 0.2);
+  border: 2px solid $primary;
+}
+
+.workflow_main_container {
+  .worflow_header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  .workflow_container {
+    display: flex;
+    gap: 40px;
+    margin-top: 15px;
+
+    .card_list_container {
+      width: 340px;
+      background-color: rgba(0, 0, 0, 0.01);
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      border-radius: 6px;
+      .empty_container {
+        height: 60vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .card_title {
+        font-weight: 600;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.07);
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+      }
+
+      .card_container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        .card {
+          box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        }
+        .dragging {
+          background-color: rgba($primary, 0.5) !important;
+        }
+      }
+      .single_stage_card {
+        height: calc(50vh / 5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 6px;
+      }
+
+      .final_stage_card {
+        min-height: calc(45vh / 5);
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        border-radius: 6px;
+        padding: 20px;
+        gap: 15px;
+        .stage_count_container {
+          height: 40px;
+          width: 40px;
+          background-color: $primary;
+          color: white;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 6px;
+          font-weight: 600;
+          font-size: 20px;
+        }
+      }
+    }
+  }
+  .configure_container {
+    width: 340px;
+    margin-top: 15px;
+    height: 190px;
+  }
+}
+.workflow_form_container {
+  margin-top: 20px !important;
+}
+
+.dropzone {
+  min-height: calc(40vh / 5);
+  border: 2px dashed #ccc;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  border-radius: 6px;
+}
+
+.dropzone.correct {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+.dropzone.wrong {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}

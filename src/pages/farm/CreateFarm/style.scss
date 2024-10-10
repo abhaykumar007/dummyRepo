@@ -1,0 +1,136 @@
+@import "../../../assets/styles/mixins.scss";
+
+.createForm {
+  height: auto;
+  display: grid;
+  grid-template-columns: 25% 75%;
+  // grid-template-columns: 0.2fr 0.1fr 1fr;
+  padding: 2rem 3rem;
+  gap: 30px;
+  max-height: auto;
+  :global(.ant-tabs-nav-list) {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
+  :global(.ant-tabs-tab) {
+    font-size: 20px !important;
+  }
+}
+
+.ant-steps-item-container {
+  display: flex;
+  align-items: center;
+}
+
+.stepper {
+  height: 100%;
+  width: 100%;
+  border-right: 1px #e6e3e3 solid;
+  // justify-content: space-between;
+}
+
+.stepperVertical {
+  display: block;
+  height: 60vh;
+}
+.stepperHorizontal {
+  display: none;
+}
+
+.reservoir {
+  margin-top: 10px;
+  height: calc(100vh - 350px);
+  overflow: auto;
+}
+
+.modal {
+  width: 750px !important;
+}
+
+.zone-card-error {
+  border: 2px solid red;
+}
+
+@media (max-width: 1300px) {
+  .stepperVertical {
+    display: none;
+    height: 100%;
+  }
+  .stepperHorizontal {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .stepper {
+    width: 100%;
+    border-right: none;
+    padding-bottom: 10px;
+    border-bottom: 1px #e6e3e3 solid;
+  }
+
+  .createForm {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    // grid-template-columns: 25% 75%;
+    // grid-template-columns: 0.2fr 0.1fr 1fr;
+    padding: 2rem 3rem;
+    gap: 30px;
+    max-height: auto;
+    :global(.ant-tabs-nav-list) {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+    }
+    :global(.ant-tabs-tab) {
+      font-size: 20px !important;
+    }
+  }
+}
+
+@media (max-width: 430px) {
+  .createForm {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    // grid-template-columns: 25% 75%;
+    // grid-template-columns: 0.2fr 0.1fr 1fr;
+    padding: 0.5rem;
+    gap: 30px;
+    max-height: auto;
+    :global(.ant-tabs-nav-list) {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+    }
+    :global(.ant-tabs-tab) {
+      font-size: 20px !important;
+    }
+  }
+}
+
+.pac-target-input {
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+  color: $gray-6 !important;
+  height: 45px !important;
+  border: 1px solid $gray-4 !important;
+  padding: 3.5px 11px !important;
+  font-size: 15px !important;
+  width: 100% !important;
+}
+.pac-item {
+  padding: 3.5px 11px !important;
+}
+
+.hdpi.pac-logo::after {
+  content: none !important;
+}
+
+.auto-complete {
+  div:first-child {
+    width: 100% !important;
+  }
+}

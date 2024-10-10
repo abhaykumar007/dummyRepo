@@ -1,0 +1,33 @@
+
+.hidden-scrollbar {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    overflow: overlay; /* Modern browsers for overlay scrollbar */
+  }
+  
+  .hidden-scrollbar::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none; /* Chrome, Safari, and Opera */
+  }
+  
+  .scrolling {
+    scrollbar-width: auto; /* Firefox */
+    -ms-overflow-style: auto; /* IE and Edge */
+  }
+  
+  .scrolling::-webkit-scrollbar {
+    width: 1px; 
+    height: 1px; 
+    display: block; /* Chrome, Safari, and Opera */
+  }
+  
+  .scrolling::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+  
+  .scrolling::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  

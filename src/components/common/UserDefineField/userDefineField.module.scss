@@ -1,0 +1,93 @@
+.userDefineField {
+  :global(.ant-form-item) {
+    margin-bottom: 0;
+  }
+  :global(.ant-alert-error) {
+    margin-bottom: 22px;
+  }
+  :global(.ant-calendar-picker) {
+    width: 273px;
+  }
+  :global(.ant-form-item-required) {
+    margin-left: 0 !important;
+  }
+  :global(.ant-row) {
+    margin-bottom: 0.5rem !important;
+  }
+  :global(label) {
+    margin-left: 12.5px;
+  }
+  :global(.ant-input-number-handler-wrap) {
+    display: none;
+  }
+  :global(.ant-tag-close-icon) {
+    color: black;
+  }
+  :global(.ant-input-number) {
+    width: 100%;
+    height: 37px;
+    padding-top: 2px;
+  }
+}
+.customCard {
+  border-radius: 5px;
+  background-color: white;
+  margin: 1rem;
+  box-shadow: 0 4px 10px 0 #6c757d6e, 0 0 10px 0 #f8f8f9;
+  margin-top: 1.5rem !important;
+
+  :global(.ant-form-item) {
+    margin-bottom: 10px !important;
+  }
+  // :global(p) {
+  //   word-break: break-word;
+  //   margin-bottom: 0 !important;
+  // }
+  @media (max-width: 890px) {
+    margin: 0.9rem;
+  }
+}
+.customRow {
+  margin-left: 2.8rem !important;
+}
+.removeParagraph {
+  width: 250px;
+  :global(p) {
+    word-break: break-word;
+    margin-bottom: 0 !important;
+  }
+}
+.displayCard {
+  :global(.ant-form-item) {
+    width: 100%;
+    position: relative !important;
+  }
+  :global(.ant-form-item-control-wrapper) {
+    width: auto !important;
+  }
+  :global(.ant-select-multiple) {
+    width: 100% !important;
+  }
+}
+.grid {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+.createGrid {
+  display: grid;
+  grid-template-columns: 40% 60%;
+}
+.setHeight {
+  height: 32px !important;
+  padding-bottom: 2px;
+  padding-top: 2px;
+}
+
+.empty {
+  height: 100vh;
+  margin-top: 6rem;
+}
+
+.redCross:hover {
+  color: #a8071a;
+}

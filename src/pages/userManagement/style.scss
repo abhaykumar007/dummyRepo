@@ -1,0 +1,16 @@
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.user-details-sidebar table {
+  width: 100%;
+}
+.user-details-sidebar tr {
+  height: 50px;
+}
+
+.user-table .ant-card-body{
+  overflow-x: scroll;
+}
+

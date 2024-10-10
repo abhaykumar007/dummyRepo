@@ -1,0 +1,26 @@
+.dashboardMain {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cardHeight {
+    height: 500px;
+    width: 100%;
+}
+
+.dashboardCard {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 20px   
+}
+
+
+@media (max-width: 1100px) {
+   
+    .dashboardCard {
+        display: grid;
+        grid-template-columns: 1fr ;
+        gap: 20px   
+       }
+  }

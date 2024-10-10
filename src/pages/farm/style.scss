@@ -1,0 +1,47 @@
+@import "../../assets/styles/mixins.scss";
+
+
+// .grid-container {
+//   display: grid;
+//   gap: 10px;
+//   padding: 10px;
+// }
+
+// .grid-container {
+//     grid-template-columns: repeat(auto-fill, minmax(335px, 1fr));
+// }
+
+// .grid-item {
+//   color: white;
+//   padding: 10px;
+//   font-size: 1.5em;
+//   border-radius: 5px;
+// }
+
+.activeTag {
+padding: 2px 10px;
+  color: white;
+  border-radius: 20px;
+}
+
+.refreshButton {
+    background-color: transparent !important;
+    padding: 5px !important;
+    border: 0 !important;
+}
+
+
+.shadow-box {
+    border-radius: 10px !important;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px !important;
+}
+
+.tableFullHeightContainer {
+    flex: 1;
+    display: flex;
+  }
+
+  .cardHighlight {
+    background-color: rgba($primary, 0.1);
+    border: 1px solid $primary;
+  }

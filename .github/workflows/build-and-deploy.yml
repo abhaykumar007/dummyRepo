@@ -1,0 +1,87 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - "GROWLOC-*"
+      - "RELEASE-*"
+      - dev
+      - prod
+      - DEPLOY_BRANCH
+
+env:
+  # SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  DISABLE_ESLINT_PLUGIN: true
+  REACT_APP_DEV_DISABLE_ESLINT: true
+  # SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+
+jobs:
+  build:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4.1.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3.8.1
+        with:
+          node-version: 20.10.0
+
+      - name: Install and Cache dependencies
+        uses: bahmutov/npm-install@v1.8.35
+
+      - name: Configure AWS credentials for SANDBOX
+        uses: aws-actions/configure-aws-credentials@v4
+        # if: startsWith(github.ref, 'refs/heads/KNYO')
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Build and Deploy (SANDBOX)
+        id: build_deploy_on_sandbox
+        run: yarn deploy-sandbox
+
+  # generate_sentry_release:
+  #   needs: [build]
+  #   name: Sentry Release
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout the code
+  #       uses: actions/checkout@v4.1.1
+
+  #     - name: Generate timestamp
+  #       id: timestamp
+  #       run: echo "RELEASE_VERSION=$(date +'%Y%m%d%H')-$(git rev-parse --short=7 HEAD)" >> $GITHUB_ENV
+
+  #     - name: Set sentry project based on environment
+  #       run: |
+  #         if [[ "${{ startsWith(github.ref, 'refs/heads/KNYO') }}" == "true" ]]; then
+  #           echo "SENTRY_PROJECT=knyo-console-sandbox" >> $GITHUB_ENV
+  #           echo "ENVIRONMENT=sandbox" >> $GITHUB_ENV
+  #         elif [[ "${{ startsWith(github.ref, 'refs/heads/prod') }}" == "true" ]]; then
+  #           echo "SENTRY_PROJECT=knyo-console-production" >> $GITHUB_ENV
+  #           echo "ENVIRONMENT=prod" >> $GITHUB_ENV
+  #         fi
+
+  #     - name: Sentry Release
+  #       id: sentry_release
+  #       uses: getsentry/action-release@v1.6.0
+  #       env:
+  #         SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+  #         SENTRY_ORG: "glabbr-e9f15083b"
+  #         SENTRY_PROJECT: ${{ env.SENTRY_PROJECT }}
+  #       with:
+  #         environment: ${{ env.ENVIRONMENT }}
+  #         version: "${{ env.RELEASE_VERSION }}"
+
+  #     - name: Notify on slack
+  #       id: notify_status
+  #       uses: act10ns/slack@v2.0.0
+  #       with:
+  #         status: ${{ job.status }}
+  #         steps: ${{ toJson(steps) }}
+  #         channel: '#github-notifications'
+  #       if: always()

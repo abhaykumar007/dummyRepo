@@ -1,0 +1,46 @@
+
+.ant-table-selection-column{
+    padding-left: 30px !important;
+}
+
+.inventory-container{
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 0px 27px #0000000d;
+    height: fit-content;
+    border-radius: 12px;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.inventory-container .ant-form-item{
+    margin-bottom: 5px !important;
+}
+
+.inventory-container .ant-input-number{
+    width: 100% !important;
+    height: 45px !important;
+}
+
+.inventory-container .ant-input-number-input-wrap{
+    height: 45px !important;
+}
+
+.inventory-container .ant-input-number-input{
+    height: 45px !important;
+}
+
+.inventory .ant-input{
+    height: 45px !important;
+}
+
+.inventory .ant-btn{
+    height: 45px !important;
+}
+
+.inventory-select{
+    min-width: 160px;
+}
+.inventory-card .ant-card-body{
+    overflow-x: scroll;
+  }

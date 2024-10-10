@@ -1,0 +1,26 @@
+@import "../../../assets/styles/mixins.scss";
+
+.error_alert_container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  overflow: auto;
+  .error_count_text {
+    color: $gray-5;
+    font-weight: 500;
+  }
+  .error_content_container {
+    display: flex;
+    gap: 10px;
+    .error_content_label {
+      color: $gray-6;
+      font-weight: 500;
+      width: 80px;
+      margin-bottom: 5px;
+    }
+    .error_content_value {
+      font-weight: 600;
+      color: $black;
+    }
+  }
+}
