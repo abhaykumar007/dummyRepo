@@ -76,7 +76,7 @@ const ZoneDetails = () => {
 
   return (
     <ScrollWrapper maxHeight={`${window.innerHeight - 100}px`}>
-      <div>
+      <div style={{ border: "10px red solid" }}>
         {loading && (
           <span
             style={{
